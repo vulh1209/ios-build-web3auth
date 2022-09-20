@@ -1,0 +1,23 @@
+{
+	"FileVersion": 3,
+	"Version": 7,
+	"VersionName": "1.0.1-UE_5.0",
+	"FriendlyName": "Blockchain",
+	"Description": "Adds networking support that allows to communicate and interact with most popular blockchain networks.",
+	"Category": "Networking",
+	"CreatedBy": "3S Game Studio OU",
+	"CreatedByURL": "https://3studio.online",
+	"DocsURL": "https://3StudioOnline.github.io/TSBC-Documentation",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/fc42c8121e0d445f8887ed6962af796e",
+	"SupportURL": "http://discord.3studio.online",
+	"EngineVersion": "5.0.0",
+	"CanContainContent": true,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "TSBC_Plugin_Runtime",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
