@@ -50,17 +50,6 @@ bool UTSBC_EncryptionFunctionLibrary::Secp256k1_CreateSignature(
         Signature);
 }
 
-bool UTSBC_EncryptionFunctionLibrary::Secp256k1_CreateSignatureDeterministic(
-    const TArray<uint8>& PrivateKey,
-    const TArray<uint8>& Hash,
-    TArray<uint8>& Signature)
-{
-    return CTSBC_EcdsaSecp256k1::Secp256k1_CreateSignatureDeterministic(
-        PrivateKey,
-        Hash,
-        Signature);
-}
-
 bool UTSBC_EncryptionFunctionLibrary::Secp256k1_VerifySignature(
     const TArray<uint8>& PublicKey,
     const TArray<uint8>& Hash,

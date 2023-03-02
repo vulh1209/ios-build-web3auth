@@ -35,9 +35,6 @@ public:
      * @param ResponseDelegate Delegate to handle the response. Will also be called if a signing the transaction fails.
      * @param PrivateKey The private key to use for signing the transaction.
      * @param Transaction The transaction parameters.
-     * @param bSignDeterministically If true, the transaction will be signed deterministically which means the same
-     *                               inputs result in the same output. Otherwise, the output will be randomized even
-     *                               for the same inputs.
      */
     UFUNCTION(
         BlueprintCallable,
@@ -46,6 +43,5 @@ public:
     static void SignTransactionLowLevel(
         FTSBC_K2_SignTransactionLowLevelCallback_Delegate ResponseDelegate,
         const FString PrivateKey,
-        const FTSBC_EthTransaction& Transaction,
-        const bool bSignDeterministically = false);
+        const FTSBC_EthTransaction& Transaction);
 };

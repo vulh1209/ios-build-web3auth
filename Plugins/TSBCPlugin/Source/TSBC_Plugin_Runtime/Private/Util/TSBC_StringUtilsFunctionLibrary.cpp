@@ -4,32 +4,38 @@
 
 #include "Util/TSBC_StringUtils.h"
 
-FString UTSBC_StringUtilsFunctionLibrary::K2_StringToHex(const FString &TextString, const bool bWithPrefix)
+FString UTSBC_StringUtilsFunctionLibrary::K2_StringToHex(const FString& TextString, const bool bWithPrefix)
 {
     return TSBC_StringUtils::StringToHex(TextString, bWithPrefix);
 }
 
-FString UTSBC_StringUtilsFunctionLibrary::K2_HexToString(const FString &HexString)
+FString UTSBC_StringUtilsFunctionLibrary::K2_HexToString(const FString& HexString)
 {
     return TSBC_StringUtils::HexToString(HexString);
 }
 
-FString UTSBC_StringUtilsFunctionLibrary::BytesToStringUtf8(const TArray<uint8> &Bytes)
+FString UTSBC_StringUtilsFunctionLibrary::BytesToString(const TArray<uint8>& Bytes)
 {
-    return TSBC_StringUtils::BytesToStringUtf8(Bytes);
+    return TSBC_StringUtils::BytesToString(Bytes);
 }
 
-FString UTSBC_StringUtilsFunctionLibrary::BytesToHex(const TArray<uint8> &Bytes)
+FString UTSBC_StringUtilsFunctionLibrary::BytesToHex(const TArray<uint8>& Bytes, const bool bWithPrefix)
 {
-    return TSBC_StringUtils::BytesToHex(Bytes);
+    return TSBC_StringUtils::BytesToHex(Bytes, bWithPrefix);
 }
 
-TArray<uint8> UTSBC_StringUtilsFunctionLibrary::HexStringToBytes(const FString &HexString)
+TArray<uint8> UTSBC_StringUtilsFunctionLibrary::StringToBytes(const FString& String)
 {
-    return TSBC_StringUtils::HexStringToBytes(HexString);
+    return TSBC_StringUtils::StringToBytes(String);
 }
 
-TArray<uint8> UTSBC_StringUtilsFunctionLibrary::StringToBytesUtf8(const FString &String)
+bool UTSBC_StringUtilsFunctionLibrary::StringToBool(const FString& String)
 {
-    return TSBC_StringUtils::StringToBytesUtf8(String);
+    return String.ToBool();
 }
+
+TArray<uint8> UTSBC_StringUtilsFunctionLibrary::HexToBytes(const FString& HexString)
+{
+    return TSBC_StringUtils::HexToBytes(HexString);
+}
+

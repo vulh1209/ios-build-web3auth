@@ -111,27 +111,6 @@ public:
         TArray<uint8>& Signature);
 
     /**
-     * Signs the given hash deterministically with the private key using secp256k1, returns a signature.
-     *
-     * Requires the given hash to be at least 16 bytes in length. Too short and it will fail. Too long and the
-     * overflowing bytes will be cut off.
-     *
-     * @param PrivateKey The private key to use for signing.
-     * @param Hash The hash to sign.
-     * @param Signature The created signature.
-     * @returns False on failure.
-     */
-    UFUNCTION(
-        BlueprintCallable,
-        DisplayName="Create Signature (Deterministic) (secp256k1)",
-        Category="3Studio|Cryptography|Encryption|ECDSA",
-        Meta=(Keywords="hash generate"))
-    static UPARAM(DisplayName="bSuccess") bool Secp256k1_CreateSignatureDeterministic(
-        const TArray<uint8>& PrivateKey,
-        const TArray<uint8>& Hash,
-        TArray<uint8>& Signature);
-
-    /**
      * Checks if the signature of a signed hash with secp256k1 is valid.
      * 
      * @param PublicKey The public key to verify.

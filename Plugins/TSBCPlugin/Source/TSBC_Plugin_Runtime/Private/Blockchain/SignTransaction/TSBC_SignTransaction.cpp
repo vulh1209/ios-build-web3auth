@@ -24,8 +24,7 @@ void CTSBC_SignTransaction::SignTransactionAsync(
     const FString ToAddress,
     const FTSBC_uint256 Value,
     const FString Data,
-    const int32 ChainId,
-    const bool bSignDeterministically)
+    const int32 ChainId)
 {
     Async(
         EAsyncExecution::Thread,
@@ -37,8 +36,7 @@ void CTSBC_SignTransaction::SignTransactionAsync(
             ToAddress,
             Value,
             Data,
-            ChainId,
-            bSignDeterministically
+            ChainId
         ]() -> FFutureRetval
         {
             const FString PrivateKeyAsString = TSBC_StringUtils::BytesToHex(PrivateKey, false);
@@ -61,8 +59,7 @@ void CTSBC_SignTransaction::SignTransactionAsync(
                 Retval.MessageHash,
                 Retval.TransactionHash,
                 PrivateKeyAsString,
-                Transaction,
-                bSignDeterministically);
+                Transaction);
 
             return Retval;
         }).Then(
@@ -93,8 +90,7 @@ void CTSBC_SignTransaction::SignTransactionSync(
     const FString ToAddress,
     const FTSBC_uint256 Value,
     const FString Data,
-    const int32 ChainId,
-    const bool bSignDeterministically)
+    const int32 ChainId)
 {
     const FString PrivateKeyAsString = TSBC_StringUtils::BytesToHex(PrivateKey, false);
 
@@ -115,22 +111,19 @@ void CTSBC_SignTransaction::SignTransactionSync(
         MessageHash,
         TransactionHash,
         PrivateKeyAsString,
-        Transaction,
-        bSignDeterministically);
+        Transaction);
 }
 
 void CTSBC_SignTransaction::SignTransactionLowLevelAsync(
     FTSBC_SignTransaction_Delegate ResponseDelegate,
     const FString PrivateKey,
-    const FTSBC_EthTransaction& Transaction,
-    const bool bSignDeterministically)
+    const FTSBC_EthTransaction& Transaction)
 {
     Async(
         EAsyncExecution::Thread,
         [
             PrivateKey,
-            Transaction,
-            bSignDeterministically
+            Transaction
         ]() -> FFutureRetval
         {
             FFutureRetval Retval;
@@ -141,8 +134,7 @@ void CTSBC_SignTransaction::SignTransactionLowLevelAsync(
                 Retval.MessageHash,
                 Retval.TransactionHash,
                 PrivateKey,
-                Transaction,
-                bSignDeterministically);
+                Transaction);
 
             return Retval;
         }).Then(
@@ -167,8 +159,7 @@ void CTSBC_SignTransaction::SignTransactionLowLevelSync(
     FString& MessageHash,
     FString& TransactionHash,
     const FString PrivateKey,
-    const FTSBC_EthTransaction& Transaction,
-    const bool bSignDeterministically)
+    const FTSBC_EthTransaction& Transaction)
 {
     bool bDebugLoggingSignedTransactionsEnabled = false;
 #if UE_EDITOR
@@ -182,7 +173,7 @@ void CTSBC_SignTransaction::SignTransactionLowLevelSync(
     ErrorMessage = "";
 
     // Validate private key to be used for signing
-    const TArray<uint8> PrivateKeyAsBytes = TSBC_StringUtils::HexStringToBytes(PrivateKey);
+    const TArray<uint8> PrivateKeyAsBytes = TSBC_StringUtils::HexToBytes(PrivateKey);
     if(PrivateKeyAsBytes.Num() != 32)
     {
         ErrorMessage = "Private Key must be 32 bytes long";
@@ -220,7 +211,7 @@ void CTSBC_SignTransaction::SignTransactionLowLevelSync(
 
     // Hash message using Keccak-256
     CTSBC_Keccak256 Hasher = CTSBC_Keccak256();
-    const TArray<uint8> MessageAsBytes = TSBC_StringUtils::HexStringToBytes(MessageAsHex);
+    const TArray<uint8> MessageAsBytes = TSBC_StringUtils::HexToBytes(MessageAsHex);
     MessageHash = Hasher.KeccakFromBytes(MessageAsBytes);
     TSBC_LOG_COND(
         bDebugLoggingSignedTransactionsEnabled,
@@ -229,32 +220,16 @@ void CTSBC_SignTransaction::SignTransactionLowLevelSync(
         *MessageHash);
 
     // Sign Message Hash
-    const TArray<uint8> HashAsBytes = TSBC_StringUtils::HexStringToBytes(MessageHash);
+    TSBC_LOG_COND(
+        bDebugLoggingSignedTransactionsEnabled,
+        Warning,
+        TEXT("Signature = SECP256k1.Sign(Private Key, Message Hash) [Non-Deterministic]"));
+    const TArray<uint8> HashAsBytes = TSBC_StringUtils::HexToBytes(MessageHash);
     TArray<uint8> Signature;
-    bool bSignatureCalculated = false;
-    if(bSignDeterministically)
-    {
-        TSBC_LOG_COND(
-            bDebugLoggingSignedTransactionsEnabled,
-            Warning,
-            TEXT("Signature = SECP256k1.Sign(Prvivate Key, Message Hash) [Deterministic]"));
-        bSignatureCalculated = CTSBC_EcdsaSecp256k1::Secp256k1_CreateSignatureDeterministic(
-            PrivateKeyAsBytes,
-            HashAsBytes,
-            Signature);
-    }
-    else
-    {
-        TSBC_LOG_COND(
-            bDebugLoggingSignedTransactionsEnabled,
-            Warning,
-            TEXT("Signature = SECP256k1.Sign(Prvivate Key, Message Hash) [Non-Deterministic]"));
-        bSignatureCalculated = CTSBC_EcdsaSecp256k1::Secp256k1_CreateSignature(
-            PrivateKeyAsBytes,
-            HashAsBytes,
-            Signature);
-    }
-
+    const bool bSignatureCalculated = CTSBC_EcdsaSecp256k1::Secp256k1_CreateSignature(
+        PrivateKeyAsBytes,
+        HashAsBytes,
+        Signature);
     if(!bSignatureCalculated)
     {
         ErrorMessage = "Failed to calculate signature";

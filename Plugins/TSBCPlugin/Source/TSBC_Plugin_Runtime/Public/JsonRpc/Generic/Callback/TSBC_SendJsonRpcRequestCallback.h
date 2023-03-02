@@ -2,6 +2,7 @@
 
 #pragma once
 #include "CoreMinimal.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 #include "Data/TSBC_Types.h"
 
 #include "TSBC_SendJsonRpcRequestCallback.generated.h"

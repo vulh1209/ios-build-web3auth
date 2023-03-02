@@ -13,8 +13,7 @@ void UTSBC_SignTransactionCallback::K2_SignTransactionCallback(
     const FString ToAddress,
     const FTSBC_uint256 Value,
     const FString Data,
-    const int32 ChainId,
-    const bool bSignDeterministically)
+    const int32 ChainId)
 {
     CTSBC_SignTransaction::FTSBC_SignTransaction_Delegate InternalDelegate;
     InternalDelegate.BindLambda(
@@ -43,6 +42,5 @@ void UTSBC_SignTransactionCallback::K2_SignTransactionCallback(
         ToAddress,
         Value,
         Data,
-        ChainId,
-        bSignDeterministically);
+        ChainId);
 }

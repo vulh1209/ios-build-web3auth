@@ -5,8 +5,8 @@
 #include "Containers/StringConv.h"
 
 // Big endian architectures need #define __BYTE_ORDER __BIG_ENDIAN
-#ifndef _MSC_VER
-#include <machine/endian.h>
+#if !defined(_MSC_VER) && !defined(PLATFORM_MAC)
+#include <endian.h> // replace to "#include <machine/endian.h>" if not working"
 #endif
 
 // Constants and local helper functions

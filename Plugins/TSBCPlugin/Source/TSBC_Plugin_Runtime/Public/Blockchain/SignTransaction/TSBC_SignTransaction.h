@@ -62,9 +62,6 @@ public:
      * @param Value The amount of Ether (in Wei) to send with this transaction.
      * @param Data The hash of the invoked method signature and encoded parameters (ABI).
      * @param ChainId The Blockchain ID.
-     * @param bSignDeterministically If true, the transaction will be signed deterministically which means the same
-     *                               inputs result in the same output. Otherwise, the output will be randomized even
-     *                               for the same inputs.
      */
     static void SignTransactionAsync(
         FTSBC_SignTransaction_Delegate ResponseDelegate,
@@ -75,8 +72,7 @@ public:
         const FString ToAddress,
         const FTSBC_uint256 Value,
         const FString Data,
-        const int32 ChainId,
-        const bool bSignDeterministically = false);
+        const int32 ChainId);
 
     /**
      * Signs a transaction.
@@ -94,9 +90,6 @@ public:
      * @param Value The amount of Ether (in Wei) to send with this transaction.
      * @param Data The hash of the invoked method signature and encoded parameters (ABI).
      * @param ChainId The Blockchain ID.
-     * @param bSignDeterministically If true, the transaction will be signed deterministically which means the same
-     *                               inputs result in the same output. Otherwise, the output will be randomized even
-     *                               for the same inputs.
      */
     static void SignTransactionSync(
         bool& bSuccess,
@@ -111,8 +104,7 @@ public:
         const FString ToAddress,
         const FTSBC_uint256 Value,
         const FString Data,
-        const int32 ChainId,
-        const bool bSignDeterministically = false);
+        const int32 ChainId);
 
     /**
      * Signs a transaction.
@@ -120,15 +112,11 @@ public:
      * @param ResponseDelegate Delegate to handle the response. Will also be called if a signing the transaction fails.
      * @param PrivateKey The private key to use for signing the transaction.
      * @param Transaction The transaction parameters.
-     * @param bSignDeterministically If true, the transaction will be signed deterministically which means the same
-     *                               inputs result in the same output. Otherwise, the output will be randomized even
-     *                               for the same inputs.
      */
     static void SignTransactionLowLevelAsync(
         FTSBC_SignTransaction_Delegate ResponseDelegate,
         const FString PrivateKey,
-        const FTSBC_EthTransaction& Transaction,
-        const bool bSignDeterministically = false);
+        const FTSBC_EthTransaction& Transaction);
 
     /**
      * Signs a transaction.
@@ -140,9 +128,6 @@ public:
      * @param TransactionHash The hash of the signed transaction.
      * @param PrivateKey The private key to use for signing the transaction.
      * @param Transaction The transaction parameters.
-     * @param bSignDeterministically If true, the transaction will be signed deterministically which means the same
-     *                               inputs result in the same output. Otherwise, the output will be randomized even
-     *                               for the same inputs.
      */
     static void SignTransactionLowLevelSync(
         bool& bSuccess,
@@ -151,8 +136,7 @@ public:
         FString& MessageHash,
         FString& TransactionHash,
         const FString PrivateKey,
-        const FTSBC_EthTransaction& Transaction,
-        const bool bSignDeterministically = false);
+        const FTSBC_EthTransaction& Transaction);
 
 private:
     /**

@@ -58,6 +58,7 @@ public:
     static void randombytes_sysrandom_buf(void* const buf, const size_t size);
 
 #if !defined(__OpenBSD__) && !defined(__CloudABI__)
+
 private:
     static bool initialized;
     static bool getrandom_available;

@@ -326,6 +326,14 @@ void UTSBC_EthereumBlockchainFunctionLibrary::GetBlockchainConfig(
             BlockchainConfig.Symbol = "MATIC";
         }
         break;
+    case ETSBC_EthereumNetwork::PolygonMumbaiTestNet:
+        {
+            BlockchainConfig.RpcUrl = "https://rpc-mumbai.maticvigil.com";
+            BlockchainConfig.NetworkName = "Polygon Mumbai (TestNet)";
+            BlockchainConfig.ChainId = 80001;
+            BlockchainConfig.Symbol = "MATIC";
+        }
+        break;
     case ETSBC_EthereumNetwork::EthMainNet:
         {
             BlockchainConfig.RpcUrl = "https://rpc.ankr.com/eth";
@@ -348,6 +356,86 @@ void UTSBC_EthereumBlockchainFunctionLibrary::GetBlockchainConfig(
             BlockchainConfig.NetworkName = "Ethereum Rinkeby (TestNet)";
             BlockchainConfig.ChainId = 4;
             BlockchainConfig.Symbol = "ETH";
+        }
+        break;
+    case ETSBC_EthereumNetwork::EthGoerliTestNet:
+        {
+            BlockchainConfig.RpcUrl = "https://goerli.infura.io/v3/";
+            BlockchainConfig.NetworkName = "Ethereum Goerli (TestNet)";
+            BlockchainConfig.ChainId = 5;
+            BlockchainConfig.Symbol = "GoerliETH";
+        }
+        break;
+    case ETSBC_EthereumNetwork::EthSepoliaTestNet:
+        {
+            BlockchainConfig.RpcUrl = "https://sepolia.infura.io/v3/";
+            BlockchainConfig.NetworkName = "Ethereum Sepolia (TestNet)";
+            BlockchainConfig.ChainId = 11155111;
+            BlockchainConfig.Symbol = "SepoliaETH";
+        }
+        break;
+    case ETSBC_EthereumNetwork::AvalancheMainNet:
+        {
+            BlockchainConfig.RpcUrl = "https://api.avax.network/ext/bc/C/rpc";
+            BlockchainConfig.NetworkName = "Avalanche Network (MainNet)";
+            BlockchainConfig.ChainId = 43114;
+            BlockchainConfig.Symbol = "AVAX";
+        }
+        break;
+    case ETSBC_EthereumNetwork::AvalancheFujiTestNet:
+        {
+            BlockchainConfig.RpcUrl = "https://api.avax-test.network/ext/bc/C/rpc";
+            BlockchainConfig.NetworkName = "Avalanche FUJI C-Chain (TestNet)";
+            BlockchainConfig.ChainId = 43113;
+            BlockchainConfig.Symbol = "AVAX";
+        }
+        break;
+    case ETSBC_EthereumNetwork::BinanceSmartChainMainNet:
+        {
+            BlockchainConfig.RpcUrl = "https://bsc-dataseed.binance.org/";
+            BlockchainConfig.NetworkName = "Binance Smart Chain (MainNet)";
+            BlockchainConfig.ChainId = 56;
+            BlockchainConfig.Symbol = "BNB";
+        }
+        break;
+    case ETSBC_EthereumNetwork::BinanceSmartChainTestNet:
+        {
+            BlockchainConfig.RpcUrl = "https://data-seed-prebsc-1-s1.binance.org:8545/";
+            BlockchainConfig.NetworkName = "Binance Smart Chain (TestNet)";
+            BlockchainConfig.ChainId = 91;
+            BlockchainConfig.Symbol = "BNB";
+        }
+        break;
+    case ETSBC_EthereumNetwork::CronosMainNet:
+        {
+            BlockchainConfig.RpcUrl = "https://evm-cronos.crypto.org";
+            BlockchainConfig.NetworkName = "Cronos (MainNet)";
+            BlockchainConfig.ChainId = 25;
+            BlockchainConfig.Symbol = "CRO";
+        }
+        break;
+    case ETSBC_EthereumNetwork::CronosTestNet:
+        {
+            BlockchainConfig.RpcUrl = "https://cronos-testnet-3.crypto.org:8545/";
+            BlockchainConfig.NetworkName = "Cronos (TestNet)";
+            BlockchainConfig.ChainId = 338;
+            BlockchainConfig.Symbol = "tCRO";
+        }
+        break;
+    case ETSBC_EthereumNetwork::HuobiEcoChainMainNet:
+        {
+            BlockchainConfig.RpcUrl = "https://http-mainnet-node.huobichain.com/";
+            BlockchainConfig.NetworkName = "Huobi Eco Chain (MainNet)";
+            BlockchainConfig.ChainId = 128;
+            BlockchainConfig.Symbol = "HT";
+        }
+        break;
+    case ETSBC_EthereumNetwork::HuobiEcoChainTestNet:
+        {
+            BlockchainConfig.RpcUrl = "https://http-testnet.hecochain.com";
+            BlockchainConfig.NetworkName = "Huobi Eco Chain (TestNet)";
+            BlockchainConfig.ChainId = 256;
+            BlockchainConfig.Symbol = "HT";
         }
         break;
     default:
@@ -486,6 +574,7 @@ bool UTSBC_EthereumBlockchainFunctionLibrary::IsValidEthereumAddress(const FStri
     return TSBC_StringUtils::RegexMatch(Address, "^0x[a-fA-F0-9]{40}$");
 }
 
+	
 FString UTSBC_EthereumBlockchainFunctionLibrary::GenerateSignatureJSONMessage(
     const FString& PrivateKey,
     const FString& JSONMessage)
@@ -496,14 +585,14 @@ FString UTSBC_EthereumBlockchainFunctionLibrary::GenerateSignatureJSONMessage(
         117, 109,  32,  83, 105, 103, 110,
         101, 100,  32,  77, 101, 115, 115,
         97, 103, 101,  58,  10
-    }; 
+    };
     TArray<uint8> JSONMessageAsBytes = TSBC_StringUtils::StringToBytesUtf8(JSONMessage);
     TArray<uint8> MsgLenAsBytes = TSBC_StringUtils::StringToBytesUtf8(FString::FromInt(JSONMessage.Len()));
     TArray<uint8> MergePrefixAndLenAsBytes = TSBC_ByteUtils::MergeBytes(PrefixAsBytes,MsgLenAsBytes);
     TArray<uint8> MessageToHashAsBytes = TSBC_ByteUtils::MergeBytes(MergePrefixAndLenAsBytes,JSONMessageAsBytes);
-    TArray<uint8> PrivateKeyAsBytes = TSBC_StringUtils::HexStringToBytes(PrivateKey);
+    TArray<uint8> PrivateKeyAsBytes = TSBC_StringUtils::HexToBytes(PrivateKey);
     FString KeccakHash = CTSBC_Keccak256().KeccakFromBytes(MessageToHashAsBytes);
-    TArray<uint8> HashAsBytes = TSBC_StringUtils::HexStringToBytes(KeccakHash);
+    TArray<uint8> HashAsBytes = TSBC_StringUtils::HexToBytes(KeccakHash);
     // Sign Message Hash
     TArray<uint8> Signature;
     bool bSignatureCalculated = false;
@@ -523,9 +612,9 @@ bool UTSBC_EthereumBlockchainFunctionLibrary::VerifySignatureJSONMessage(
     const FString& Signature)
 {
     FString KeccakHash = CTSBC_Keccak256().KeccakFromString(JSONMessage,false);
-    TArray<uint8> HashAsBytes = TSBC_StringUtils::HexStringToBytes(KeccakHash);
-    TArray<uint8> PublicKeyAsBytes = TSBC_StringUtils::HexStringToBytes(PublicKey);
-    TArray<uint8> SignatureAsBytes = TSBC_StringUtils::HexStringToBytes(Signature);
+    TArray<uint8> HashAsBytes = TSBC_StringUtils::HexToBytes(KeccakHash);
+    TArray<uint8> PublicKeyAsBytes = TSBC_StringUtils::HexToBytes(PublicKey);
+    TArray<uint8> SignatureAsBytes = TSBC_StringUtils::HexToBytes(Signature);
     return CTSBC_EcdsaSecp256k1::Secp256k1_VerifySignature(
         PublicKeyAsBytes,
         HashAsBytes,

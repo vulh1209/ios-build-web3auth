@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 7,
-	"VersionName": "1.0.1-UE_5.0",
+	"Version": 22,
+	"VersionName": "2.0.4-UE_5.0",
 	"FriendlyName": "Blockchain",
 	"Description": "Adds networking support that allows to communicate and interact with most popular blockchain networks.",
 	"Category": "Networking",
@@ -17,7 +17,26 @@
 		{
 			"Name": "TSBC_Plugin_Runtime",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Android",
+				"Linux",
+				"Win64",
+				"Mac",
+				"IOS"
+			]
+		},
+		{
+			"Name": "TSBC_Plugin_Editor",
+			"Type": "UncookedOnly",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Android",
+				"Linux",
+				"Win64",
+				"Mac",
+				"IOS"
+			]
 		}
 	]
 }

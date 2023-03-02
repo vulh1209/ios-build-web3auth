@@ -4,6 +4,7 @@
 
 #include "HttpModule.h"
 #include "Interfaces/IHttpResponse.h"
+#include "Module/TSBC_RuntimeLogCategories.h"
 
 void CTSBC_SendJsonRpcRequest::SendJsonRpcRequest(
     FTSBC_JsonRpcResponse_Delegate ResponseDelegate,
@@ -17,6 +18,13 @@ void CTSBC_SendJsonRpcRequest::SendJsonRpcRequest(
         *Method,
         *Params,
         *ID);
+
+#if !UE_BUILD_SHIPPING
+    if(URL.TrimStartAndEnd().IsEmpty())
+    {
+        TSBC_LOG(Error, TEXT("JSON-RPC URL is unset: Method<%s> ID<%s>"), *Method, *ID);
+    }
+#endif
 
     const TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
     HttpRequest->SetVerb("POST");

@@ -44,15 +44,35 @@ void CTSBC_EthCall::EthCall(
             ResponseDelegate.ExecuteIfBound(Response.bSuccess, Response, ResponseData);
         });
 
-    CTSBC_SendJsonRpcRequest::SendJsonRpcRequest(
-        InternalCallback,
-        URL,
-        ID,
-        "eth_call",
-        FString::Printf(
-            TEXT("{\"from\":\"%s\",\"to\":\"%s\",\"data\":\"%s\"}, \"%s\""),
-            *FromAddress,
-            *ToAddress,
-            *Data,
-            *UTSBC_EthereumBlockchainFunctionLibrary::BlockIdentifierFromEnum(BlockIdentifier)));
+    const FString FromAddressSanitized = FromAddress.TrimStartAndEnd();
+    if(FromAddressSanitized == ""
+       || FromAddressSanitized == "0"
+       || FromAddressSanitized == "0x"
+       || FromAddressSanitized == "0x0")
+    {
+        CTSBC_SendJsonRpcRequest::SendJsonRpcRequest(
+            InternalCallback,
+            URL,
+            ID,
+            "eth_call",
+            FString::Printf(
+                TEXT("{\"to\":\"%s\",\"data\":\"%s\"}, \"%s\""),
+                *ToAddress,
+                *Data,
+                *UTSBC_EthereumBlockchainFunctionLibrary::BlockIdentifierFromEnum(BlockIdentifier)));
+    }
+    else
+    {
+        CTSBC_SendJsonRpcRequest::SendJsonRpcRequest(
+            InternalCallback,
+            URL,
+            ID,
+            "eth_call",
+            FString::Printf(
+                TEXT("{\"from\":\"%s\",\"to\":\"%s\",\"data\":\"%s\"}, \"%s\""),
+                *FromAddress,
+                *ToAddress,
+                *Data,
+                *UTSBC_EthereumBlockchainFunctionLibrary::BlockIdentifierFromEnum(BlockIdentifier)));
+    }
 }

@@ -22,6 +22,7 @@ class TSBC_PLUGIN_RUNTIME_API UTSBC_HashFunctionLibrary : public UBlueprintFunct
 
 public:
     const static FString CharSetDigits;
+    const static FString CharSetChecksumDigits;
     const static FString CharSetHex;
 
 public:

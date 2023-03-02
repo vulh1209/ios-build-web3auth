@@ -18,12 +18,12 @@ public:
     /**
      * Converts the text string to a string containing the corresponding
      * character byte values written in two-digit lowercase hex format.
-     *
+     * 
      * @param TextString The text string to be converted to a hex string.
      * @param bWithPrefix If true, the hex code will be prefixed with "0x" (Default: True).
-     * @returns Hex string of the input text string.
+     * @returns Hex string of the input text string. 
      */
-    UFUNCTION(BlueprintPure, DisplayName = "String to Hex", Category = "3Studio|Utilities|String")
+    UFUNCTION(BlueprintPure, DisplayName="String to Hex", Category="3Studio|Utilities|String")
     static FString K2_StringToHex(const FString& TextString, const bool bWithPrefix = true);
 
     /**
@@ -32,42 +32,53 @@ public:
      * @param HexString The hex string to be converted to a text string.
      * @returns A text string created from the given hex string.
      */
-    UFUNCTION(BlueprintPure, DisplayName = "Hex to String", Category = "3Studio|Utilities|String")
+    UFUNCTION(BlueprintPure, DisplayName="Hex to String", Category="3Studio|Utilities|String")
     static FString K2_HexToString(const FString& HexString);
 
     /**
-     * Converts byte Array to a utf8 string.
-     *
-     * @param Bytes to be converted to a utf8 string.
-     * @returns A utf8 string created from the given a bytes array.
+     * Tries to convert a byte array into string using UTF-8 encoding.
+     * 
+     * @param Bytes UTF8-encoded data.
+     * @returns String from byte array; will be empty if conversion fails.
      */
-    UFUNCTION(BlueprintPure, DisplayName = "Bytes to String", Category = "3Studio|Utilities|String")
-    static FString BytesToStringUtf8(const TArray<uint8>& Bytes);
+    UFUNCTION(BlueprintPure, Category="3Studio|Utilities|String")
+    static FString BytesToString(const TArray<uint8>& Bytes);
 
     /**
-     * Converts byte Array to a hex string.
-     *
-     * @param Bytes to be converted to a hex string.
-     * @returns A hex string created from the given a bytes array.
+     * Converts string into a byte array using UTF-8 encoding.
+     * 
+     * @param String String to convert.
+     * @returns Byte array from string.
      */
-    UFUNCTION(BlueprintPure, DisplayName = "Bytes to Hex", Category = "3Studio|Utilities|String")
-    static FString BytesToHex(const TArray<uint8>& Bytes);
+    UFUNCTION(BlueprintPure, Category="3Studio|Utilities|String")
+    static TArray<uint8> StringToBytes(const FString& String);
 
     /**
-     * Converts a hex string to byte Array.
-     *
-     * @param HexString to be converted to byte Array.
-     * @returns byte Array created from the given a Hexstring.
+     * Converts a hex string into a byte array using UTF-8 encoding.
+     * 
+     * @param HexString The hex string to be converted to a text string.
+     * @returns Byte array from hex string.
      */
-    UFUNCTION(BlueprintPure, DisplayName = "Hex to Bytes", Category = "3Studio|Utilities|String")
-    static TArray<uint8> HexStringToBytes(const FString& HexString);
+    UFUNCTION(BlueprintPure, Category="3Studio|Utilities|String")
+    static TArray<uint8> HexToBytes(const FString& HexString);
 
     /**
-     * Converts a utf8 string to byte Array.
-     *
-     * @param String to be converted to byte Array.
-     * @returns byte Array created from the given utf8 string.
+     * Converts the byte array to a string containing the corresponding
+     * character byte values written in two-digit lowercase hex format.
+     * 
+     * @param Bytes Byte array.
+     * @param bWithPrefix If true, the hex code will be prefixed with "0x" (Default: True).
+     * @returns Hex string from byte array; will be empty if conversion fails.
      */
-    UFUNCTION(BlueprintPure, DisplayName = "String to Bytes", Category = "3Studio|Utilities|String")
-    static TArray<uint8> StringToBytesUtf8(const FString& String);
+    UFUNCTION(BlueprintPure, Category="3Studio|Utilities|String")
+    static FString BytesToHex(const TArray<uint8>& Bytes, const bool bWithPrefix = true);
+
+    /**
+     * Converts a string to a bool.
+     *
+     * @param String The string to be converted to a bool.
+     * @returns A bool created from the given string.
+     */
+    UFUNCTION(BlueprintPure, DisplayName="String to Bool", Category="3Studio|Utilities|String")
+    static bool StringToBool(const FString& String);
 };

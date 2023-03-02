@@ -1509,38 +1509,6 @@ bool CTSBC_EcdsaSecp256k1::Secp256k1_CreateSignature(
     return true;
 }
 
-bool CTSBC_EcdsaSecp256k1::Secp256k1_CreateSignatureDeterministic(
-    const TArray<uint8>& PrivateKey,
-    const TArray<uint8>& Hash,
-    TArray<uint8>& Signature)
-{
-    const uECC_Curve* curve = uECC_secp256k1();
-    if(!IsPrivateKeyValid(PrivateKey, curve))
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Invalid private key"));
-        Signature.Empty();
-        return false;
-    }
-
-    TArray<uint8> Buffer;
-    const uECC_HashContext HashContext = GetHashContextSha256(Buffer);
-    Signature.SetNum(curve->num_bytes * 2 + 1);
-    if(!uECC_sign_deterministic(
-        PrivateKey.GetData(),
-        Hash.GetData(),
-        Hash.Num(),
-        &HashContext,
-        Signature.GetData(),
-        curve))
-    {
-        UE_LOG(LogTemp, Warning, TEXT("gen signature fail"));
-        Signature.Empty();
-        return false;
-    }
-
-    return true;
-}
-
 bool CTSBC_EcdsaSecp256k1::Secp256k1_VerifySignature(
     const TArray<uint8>& PublicKey,
     const TArray<uint8>& Hash,

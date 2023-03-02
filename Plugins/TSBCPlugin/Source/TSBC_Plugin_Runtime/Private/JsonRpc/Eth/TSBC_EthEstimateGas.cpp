@@ -11,7 +11,8 @@ void CTSBC_EthEstimateGas::EthEstimateGas(
     const FString& ID,
     const FString& FromAddress,
     const FString& ToAddress,
-    const FString& Data)
+    const FString& Data,
+    const FTSBC_uint256 Value)
 {
     CTSBC_SendJsonRpcRequest::FTSBC_JsonRpcResponse_Delegate InternalCallback;
     InternalCallback.BindLambda(
@@ -52,9 +53,16 @@ void CTSBC_EthEstimateGas::EthEstimateGas(
         URL,
         ID,
         "eth_estimateGas",
-        FString::Printf(
+        Value == 0
+        ? FString::Printf(
             TEXT("{\"from\":\"%s\",\"to\":\"%s\",\"data\":\"%s\"}"),
             *FromAddress,
             *ToAddress,
+            *Data)
+        : FString::Printf(
+            TEXT("{\"from\":\"%s\",\"to\":\"%s\",\"value\":\"%s\",\"data\":\"%s\"}"),
+            *FromAddress,
+            *ToAddress,
+            *Value.ToHexString(),
             *Data));
 }

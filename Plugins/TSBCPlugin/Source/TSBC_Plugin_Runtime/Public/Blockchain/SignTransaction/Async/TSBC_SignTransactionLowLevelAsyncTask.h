@@ -39,18 +39,12 @@ private:
     UPROPERTY()
     FTSBC_EthTransaction _Transaction;
 
-    UPROPERTY()
-    bool _bSignDeterministically;
-
 public:
     /**
      * Signs a transaction.
      * 
      * @param PrivateKey The private key to use for signing the transaction.
      * @param Transaction The transaction parameters.
-     * @param bSignDeterministically If true, the transaction will be signed deterministically which means the same
-     *                               inputs result in the same output. Otherwise, the output will be randomized even
-     *                               for the same inputs.
      */
     UFUNCTION(
         BlueprintCallable,
@@ -59,8 +53,7 @@ public:
         Meta=(BlueprintInternalUseOnly="true"))
     static UTSBC_SignTransactionLowLevelAsyncTask* K2_SignTransactionLowLevelAsync(
         const FString& PrivateKey,
-        const FTSBC_EthTransaction& Transaction,
-        const bool bSignDeterministically);
+        const FTSBC_EthTransaction& Transaction);
 
     virtual void Activate() override;
 };

@@ -8,6 +8,7 @@
 #include "Crypto/Hash/TSBC_Sha512.h"
 
 const FString UTSBC_HashFunctionLibrary::CharSetDigits = ("0123456789");
+const FString UTSBC_HashFunctionLibrary::CharSetChecksumDigits = ("01234567");
 const FString UTSBC_HashFunctionLibrary::CharSetHex = "abcdef";
 
 UTSBC_HashFunctionLibrary::UTSBC_HashFunctionLibrary()
@@ -64,13 +65,10 @@ bool UTSBC_HashFunctionLibrary::ChecksumFromKeccak256(
         if(CharSetHex.FindChar(CurrentCharacter, CharFoundAtIndex))
         {
             /**
-             * If the current character is in the CharSetHex so its decimal value
-             * should be between 97 and 102. 
-             * Check if at the current index the CurrentCharacter and the ChecksumReference both contain a character
-             * from CharSetHex(abcdef), if true make the character in CalculatedChecksum uppercased.
+             * If the current ChecksumReference character is not in the CharSetChecksum
+             * make the character in CalculatedChecksum uppercased.
              */
-            const int32 NumericValueOfHexDigit = CharSetHex[5] /* 'f' */ - ChecksumReference[i];
-            if(NumericValueOfHexDigit < 7)
+            if(!CharSetChecksumDigits.FindChar(ChecksumReference[i], CharFoundAtIndex))
             {
                 CalculatedChecksum.AppendChar(toupper(CurrentCharacter));
             }

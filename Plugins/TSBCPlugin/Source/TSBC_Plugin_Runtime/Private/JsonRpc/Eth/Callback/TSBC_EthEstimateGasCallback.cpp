@@ -10,7 +10,8 @@ void UTSBC_EthEstimateGasCallback::K2_EthEstimateGasCallback(
     const FString& ID,
     const FString& FromAddress,
     const FString& ToAddress,
-    const FString& Data)
+    const FString& Data,
+    const FTSBC_uint256 Value)
 {
     CTSBC_EthEstimateGas::FTSBC_EthEstimateGas_Delegate InternalDelegate;
     InternalDelegate.BindLambda(
@@ -29,5 +30,6 @@ void UTSBC_EthEstimateGasCallback::K2_EthEstimateGasCallback(
         ID,
         FromAddress,
         ToAddress,
-        Data);
+        Data,
+        Value);
 }

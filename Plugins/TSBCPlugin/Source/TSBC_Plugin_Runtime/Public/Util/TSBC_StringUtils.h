@@ -42,7 +42,7 @@ namespace TSBC_StringUtils
      * @param HexString A string containing hex digits. A "0x" prefix is allowed.
      * @returns Byte array of the hex string. Will be empty if the input hex string is empty or the conversion failed.
      */
-    FORCEINLINE static TArray<uint8> HexStringToBytes(const FString& HexString)
+    FORCEINLINE static TArray<uint8> HexToBytes(const FString& HexString)
     {
         TArray<uint8> Buffer;
 
@@ -182,7 +182,7 @@ namespace TSBC_StringUtils
      */
     FORCEINLINE static FString HexToString(const FString& HexString)
     {
-        return BytesToStringUtf8(HexStringToBytes(HexString));
+        return BytesToStringUtf8(HexToBytes(HexString));
     }
 
     /**
@@ -318,6 +318,39 @@ namespace TSBC_StringUtils
         return Input.Append(FString::ChrN(Len,TEXT('0')));
     }
 
-    // const FString FarthestZeros = FString::ChrN((AbiSegmentCharLength * NumberOfSegments) - StringHex.Len(),TEXT('0'));
-    // EncodedValue.Append(StringHex + FarthestZeros);
+    /**
+     * Tries to convert a byte array into string using UTF-8 encoding.
+     * 
+     * @param Bytes UTF8-encoded data.
+     * @returns String from byte array; will be empty if conversion fails.
+     */
+    FORCEINLINE static FString BytesToString(const TArray<uint8>& Bytes)
+    {
+        if(Bytes.Num() <= 0)
+        {
+            return "";
+        }
+
+        const FUTF8ToTCHAR TCHARData(reinterpret_cast<const ANSICHAR*>(Bytes.GetData()), Bytes.Num());
+        return FString(TCHARData.Length(), TCHARData.Get());
+    }
+
+    /**
+     * Converts string into a byte array using UTF-8 encoding.
+     * 
+     * @param String String to convert.
+     * @returns Byte array from string.
+     */
+    FORCEINLINE static TArray<uint8> StringToBytes(const FString& String)
+    {
+        if(String.Len() <= 0)
+        {
+            return TArray<uint8>();
+        }
+
+        TArray<uint8> ByteArray;
+        const FTCHARToUTF8 Src = FTCHARToUTF8(String.GetCharArray().GetData());
+        ByteArray.Append((uint8*)Src.Get(), Src.Length());
+        return ByteArray;
+    }
 }

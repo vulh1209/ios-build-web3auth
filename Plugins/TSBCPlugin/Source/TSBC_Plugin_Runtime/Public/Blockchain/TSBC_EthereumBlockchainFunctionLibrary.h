@@ -179,19 +179,18 @@ public:
      *
      * @param PrivateKey The private key hex string.
      * @param JSONMessage The stringtify of JSON message.
-     * @returns The hex string of signature. 
+     * @returns The hex string of signature.
      */
-    UFUNCTION(BlueprintPure, DisplayName = "Sign JSON Stringtify", Category = "3Studio|Blockchain|Ethereum")
+    UFUNCTION(BlueprintPure, DisplayName = "Sign JSON Stringtify", Category = "Atherlabs|Blockchain|Ethereum")
     static FString GenerateSignatureJSONMessage(const FString& PrivateKey, const FString& JSONMessage);
-
     /**
      * verify signature hex string and json message string from publickey or not
      *
      * @param PublicKey The public key hex string.
      * @param JSONMessage The stringtify of JSON message.
      * @param Signature The signature hex string.
-     * @returns bool verify signature from publickey or not. 
+     * @returns bool verify signature from publickey or not.
      */
-    UFUNCTION(BlueprintPure, DisplayName = "Verify Signature JSON", Category = "3Studio|Blockchain|Ethereum")
+    UFUNCTION(BlueprintPure, DisplayName = "Verify Signature JSON", Category = "Atherlabs|Blockchain|Ethereum")
     static bool VerifySignatureJSONMessage(const FString& PublicKey, const FString& JSONMessage, const FString& Signature);
 };

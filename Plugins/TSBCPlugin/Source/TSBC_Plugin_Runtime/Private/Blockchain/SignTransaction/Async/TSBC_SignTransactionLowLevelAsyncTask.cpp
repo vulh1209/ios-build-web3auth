@@ -6,14 +6,12 @@
 
 UTSBC_SignTransactionLowLevelAsyncTask* UTSBC_SignTransactionLowLevelAsyncTask::K2_SignTransactionLowLevelAsync(
     const FString& PrivateKey,
-    const FTSBC_EthTransaction& Transaction,
-    const bool bSignDeterministically)
+    const FTSBC_EthTransaction& Transaction)
 {
     UTSBC_SignTransactionLowLevelAsyncTask* AsyncTask = NewObject<UTSBC_SignTransactionLowLevelAsyncTask>();
 
     AsyncTask->_PrivateKey = PrivateKey;
     AsyncTask->_Transaction = Transaction;
-    AsyncTask->_bSignDeterministically = bSignDeterministically;
 
     return AsyncTask;
 }
@@ -40,6 +38,5 @@ void UTSBC_SignTransactionLowLevelAsyncTask::Activate()
     CTSBC_SignTransaction::SignTransactionLowLevelAsync(
         InternalDelegate,
         _PrivateKey,
-        _Transaction,
-        _bSignDeterministically);
+        _Transaction);
 }

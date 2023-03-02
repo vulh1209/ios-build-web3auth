@@ -57,9 +57,6 @@ private:
     UPROPERTY()
     int32 _ChainId;
 
-    UPROPERTY()
-    bool _bSignDeterministically;
-
 public:
     /**
      * Signs a transaction.
@@ -72,9 +69,6 @@ public:
      * @param Value The amount of Ether (in Wei) to send with this transaction.
      * @param Data The hash of the invoked method signature and encoded parameters (ABI).
      * @param ChainId The Blockchain ID.
-     * @param bSignDeterministically If true, the transaction will be signed deterministically which means the same
-     *                               inputs result in the same output. Otherwise, the output will be randomized even
-     *                               for the same inputs.
      */
     UFUNCTION(
         BlueprintCallable,
@@ -89,8 +83,7 @@ public:
         const FString& ToAddress,
         const FTSBC_uint256& Value,
         const FString& Data,
-        const int32 ChainId,
-        const bool bSignDeterministically);
+        const int32 ChainId);
 
     virtual void Activate() override;
 };

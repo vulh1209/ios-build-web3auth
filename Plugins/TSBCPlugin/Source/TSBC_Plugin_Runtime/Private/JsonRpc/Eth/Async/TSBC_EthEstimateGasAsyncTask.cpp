@@ -9,7 +9,8 @@ UTSBC_EthEstimateGasAsyncTask* UTSBC_EthEstimateGasAsyncTask::K2_EthEstimateGasA
     const FString& ID,
     const FString& FromAddress,
     const FString& ToAddress,
-    const FString& Data)
+    const FString& Data,
+    const FTSBC_uint256 Value)
 {
     UTSBC_EthEstimateGasAsyncTask* AsyncTask = NewObject<UTSBC_EthEstimateGasAsyncTask>();
     AsyncTask->_URL = URL;
@@ -17,6 +18,7 @@ UTSBC_EthEstimateGasAsyncTask* UTSBC_EthEstimateGasAsyncTask::K2_EthEstimateGasA
     AsyncTask->_FromAddress = FromAddress;
     AsyncTask->_ToAddress = ToAddress;
     AsyncTask->_Data = Data;
+    AsyncTask->_Value = Value;
 
     return AsyncTask;
 }
@@ -39,5 +41,6 @@ void UTSBC_EthEstimateGasAsyncTask::Activate()
         _ID,
         _FromAddress,
         _ToAddress,
-        _Data);
+        _Data,
+        _Value);
 }

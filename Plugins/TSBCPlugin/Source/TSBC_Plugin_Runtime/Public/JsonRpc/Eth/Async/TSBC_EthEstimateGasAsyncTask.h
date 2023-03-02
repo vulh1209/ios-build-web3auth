@@ -45,6 +45,9 @@ private:
     UPROPERTY()
     FString _Data;
 
+    UPROPERTY()
+    FTSBC_uint256 _Value;
+
 public:
     /**
      * Gets the estimated gas price for the specified transaction.
@@ -54,6 +57,7 @@ public:
      * @param FromAddress The address the transaction is sent from.
      * @param ToAddress The address the transaction is directed to.
      * @param Data The hash of the invoked method signature and encoded parameters (ABI).
+     * @param Value The value sent with this transaction (Optional).
      */
     UFUNCTION(
         BlueprintCallable,
@@ -65,7 +69,8 @@ public:
         const FString& ID,
         const FString& FromAddress,
         const FString& ToAddress,
-        const FString& Data);
+        const FString& Data,
+        const FTSBC_uint256 Value);
 
     virtual void Activate() override;
 };

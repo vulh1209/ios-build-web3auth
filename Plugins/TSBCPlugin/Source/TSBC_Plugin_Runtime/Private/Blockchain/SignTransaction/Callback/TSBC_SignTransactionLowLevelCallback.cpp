@@ -8,8 +8,7 @@
 void UTSBC_SignTransactionLowLevelCallback::SignTransactionLowLevel(
     FTSBC_K2_SignTransactionLowLevelCallback_Delegate ResponseDelegate,
     const FString PrivateKey,
-    const FTSBC_EthTransaction& Transaction,
-    const bool bSignDeterministically)
+    const FTSBC_EthTransaction& Transaction)
 {
     CTSBC_SignTransaction::FTSBC_SignTransaction_Delegate InternalDelegate;
     InternalDelegate.BindLambda(
@@ -32,6 +31,5 @@ void UTSBC_SignTransactionLowLevelCallback::SignTransactionLowLevel(
     CTSBC_SignTransaction::SignTransactionLowLevelAsync(
         InternalDelegate,
         PrivateKey,
-        Transaction,
-        bSignDeterministically);
+        Transaction);
 }

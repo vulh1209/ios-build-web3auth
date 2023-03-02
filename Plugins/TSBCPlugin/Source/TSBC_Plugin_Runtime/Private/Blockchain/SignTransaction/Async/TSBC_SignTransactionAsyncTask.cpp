@@ -12,8 +12,7 @@ UTSBC_SignTransactionAsyncTask* UTSBC_SignTransactionAsyncTask::K2_SignTransacti
     const FString& ToAddress,
     const FTSBC_uint256& Value,
     const FString& Data,
-    const int32 ChainId,
-    const bool bSignDeterministically)
+    const int32 ChainId)
 {
     UTSBC_SignTransactionAsyncTask* AsyncTask = NewObject<UTSBC_SignTransactionAsyncTask>();
 
@@ -25,7 +24,6 @@ UTSBC_SignTransactionAsyncTask* UTSBC_SignTransactionAsyncTask::K2_SignTransacti
     AsyncTask->_Value = Value;
     AsyncTask->_Data = Data;
     AsyncTask->_ChainId = ChainId;
-    AsyncTask->_bSignDeterministically = bSignDeterministically;
 
     return AsyncTask;
 }
@@ -58,6 +56,5 @@ void UTSBC_SignTransactionAsyncTask::Activate()
         _ToAddress,
         _Value,
         _Data,
-        _ChainId,
-        _bSignDeterministically);
+        _ChainId);
 }

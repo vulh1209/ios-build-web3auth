@@ -7,7 +7,7 @@ TArray<uint8> UTSBC_RLP::Encode(const FString& InHex)
 {
     TArray<uint8> Result;
 
-    const TArray<uint8> DataAsBytes = TSBC_StringUtils::HexStringToBytes(InHex);
+    const TArray<uint8> DataAsBytes = TSBC_StringUtils::HexToBytes(InHex);
     const int32 NumDataBytesToEncode = DataAsBytes.Num();
 
     // Encode 1 byte of data
@@ -49,7 +49,7 @@ TArray<uint8> UTSBC_RLP::Encode(const FString& InHex)
 
     // These bytes describe the length of the encoded data
     const uint8* NumDataBytesToEncodeAsUInt8Ptr = reinterpret_cast<uint8*>(const_cast<int32*>(&NumDataBytesToEncode));
-    for(int32 i = 0; i < NumBytesForLength; i++)
+    for(int32 i = NumBytesForLength - 1; i >= 0; i--)
     {
         const uint8 Byte = NumDataBytesToEncodeAsUInt8Ptr[i];
         Result.Add(Byte);
@@ -74,7 +74,7 @@ TArray<uint8> UTSBC_RLP::Encode(const TArray<FString>& InHexArray)
         Result.Append(Encode(InHex));
     }
 
-    const uint8 NumDataBytesToEncode = Result.Num();
+    const int32 NumDataBytesToEncode = Result.Num();
 
     // Encode between 0 and up to 55 bytes of data
     if(NumDataBytesToEncode <= 55)
@@ -84,23 +84,21 @@ TArray<uint8> UTSBC_RLP::Encode(const TArray<FString>& InHexArray)
     }
 
     // Encode more than 55 bytes of data
-    TArray<uint8> Tmp;
-
     // This byte describes how many bytes make up the length value for the encoded data
-    constexpr uint8 NumBytesForLength = sizeof NumDataBytesToEncode;
+    const uint8 NumBytesForLength = BytesNeeded(NumDataBytesToEncode);
+
+    TArray<uint8> Tmp;
     Tmp.Add(NumBytesForLength + 0xF7);
 
     // These bytes describe describe the length of the encoded data
-    TArray<uint8> LengthBytes;
-    LengthBytes.Init(0, sizeof NumDataBytesToEncode);
-    FMemory::Memcpy(LengthBytes.GetData(), &NumDataBytesToEncode, sizeof NumDataBytesToEncode);
-    for(uint8 Byte : LengthBytes)
+    const uint8* NumDataBytesToEncodeAsUInt8Ptr = reinterpret_cast<uint8*>(const_cast<int32*>(&NumDataBytesToEncode));
+    for(int32 i = NumBytesForLength - 1; i >= 0; i--)
     {
+        const uint8 Byte = NumDataBytesToEncodeAsUInt8Ptr[i];
         Tmp.Add(Byte);
     }
 
     Result.Insert(Tmp, 0);
-
     return Result;
 }
 
